@@ -21,15 +21,22 @@ def cargar_datos():
     try:
         # Cargar el shapefile
         shp_path = "datos/SHP_MGN2018_INTGRD_DEPTO/MGN_ANM_DPTOS.shp"
+        st.info(f"Intentando cargar shapefile desde: {shp_path}")
         gdf = gpd.read_file(shp_path)
+        st.success(f"✅ Shapefile cargado correctamente. Registros: {len(gdf)}")
         
         # Cargar el archivo Excel
-        excel_path = "datos/proyectos/proyecto_colombia.xlsx"
+        excel_path = "datos/proyectos/proyeto_colombia.xlsx"
+        st.info(f"Intentando cargar Excel desde: {excel_path}")
         df_excel = pd.read_excel(excel_path)
+        st.success(f"✅ Excel cargado correctamente. Registros: {len(df_excel)}")
         
         return gdf, df_excel
     except Exception as e:
-        st.error(f"Error al cargar los datos: {e}")
+        st.error(f"❌ Error al cargar los datos: {str(e)}")
+        st.error(f"Tipo de error: {type(e).__name__}")
+        import traceback
+        st.code(traceback.format_exc())
         return None, None
 
 # Cargar los datos
@@ -89,7 +96,7 @@ if gdf is not None and df_excel is not None:
             margin={"r":0,"t":40,"l":0,"b":0}
         )
         
-        st.plotly_chart(fig_mapa, use_container_width=True)
+        st.plotly_chart(fig_mapa, width='stretch')
     
     with col2:
         st.subheader("📊 Proyectos por Año de Publicación")
@@ -120,7 +127,7 @@ if gdf is not None and df_excel is not None:
             showlegend=False
         )
         
-        st.plotly_chart(fig_linea, use_container_width=True)
+        st.plotly_chart(fig_linea, width='stretch')
     
     # Sección de estadísticas
     st.markdown("---")
@@ -156,14 +163,21 @@ if gdf is not None and df_excel is not None:
     
     st.dataframe(
         tabla_resumen,
-        use_container_width=True,
+        width='stretch',
         hide_index=True
     )
     
 else:
     st.error("⚠️ No se pudieron cargar los datos. Verifica que los archivos existan en las rutas especificadas:")
     st.code("datos/SHP_MGN2018_INTGRD_DEPTO/MGN_ANM_DPTOS.shp")
-    st.code("datos/proyectos/proyecto_colombia.xlsx")
+    st.code("datos/proyectos/proyeto_colombia.xlsx")
+    
+    st.info("📝 Asegúrate de que:")
+    st.markdown("""
+    - Los archivos del shapefile estén completos (.shp, .shx, .dbf, .prj)
+    - El archivo Excel tenga la columna 'Departamento' y 'Año de publicación'
+    - Las rutas de las carpetas sean exactamente como se especifican
+    """)
 
 # Pie de página
 st.markdown("---")
