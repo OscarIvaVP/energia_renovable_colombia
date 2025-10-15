@@ -24,7 +24,7 @@ def cargar_datos():
         gdf = gpd.read_file(shp_path)
         
         # Cargar el archivo Excel
-        excel_path = "datos/proyectos/proyeto_colombia.xlsx"
+        excel_path = "datos/proyectos/proyecto_colombia.xlsx"
         df_excel = pd.read_excel(excel_path)
         
         return gdf, df_excel
@@ -163,7 +163,7 @@ if gdf is not None and df_excel is not None:
 else:
     st.error("⚠️ No se pudieron cargar los datos. Verifica que los archivos existan en las rutas especificadas:")
     st.code("datos/SHP_MGN2018_INTGRD_DEPTO/MGN_ANM_DPTOS.shp")
-    st.code("datos/proyectos/proyeto_colombia.xlsx")
+    st.code("datos/proyectos/proyecto_colombia.xlsx")
 
 # Pie de página
 st.markdown("---")
