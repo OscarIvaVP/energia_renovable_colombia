@@ -6,13 +6,13 @@ import plotly.graph_objects as go
 
 # Configuración de la página
 st.set_page_config(
-    page_title="Proyectos Energia Renovables en Colombia",
-    page_icon="🌬️",
+    page_title="Análisis de Proyectos de Energía Renovable en Colombia",
+    page_icon="⚡",
     layout="wide"
 )
 
 # Título principal
-st.title("🌬️ Análisis de Proyectos Eólicos en Colombia")
+st.title("⚡ Análisis de Proyectos de Energía Renovable en Colombia")
 st.markdown("---")
 
 # Función para cargar datos
@@ -76,7 +76,7 @@ if gdf is not None and df_excel is not None:
             hover_data={'Cantidad_Proyectos': True},
             color_continuous_scale='YlOrRd',
             labels={'Cantidad_Proyectos': 'Número de Proyectos'},
-            title='Distribución de Proyectos Eólicos por Departamento'
+            title='Distribución de Proyectos de Energía Renovable por Departamento'
         )
         
         fig_mapa.update_geos(
@@ -112,7 +112,7 @@ if gdf is not None and df_excel is not None:
         ))
         
         fig_linea.update_layout(
-            title='Evolución Temporal de Proyectos Eólicos',
+            title='Evolución Temporal de Proyectos de Energía Renovable',
             xaxis_title='Año de Publicación',
             yaxis_title='Número de Proyectos',
             hovermode='x unified',
@@ -177,7 +177,15 @@ st.markdown("---")
 st.markdown(
     """
     <div style='text-align: center'>
-        <p>Desarrollado con Streamlit 🎈 | Análisis de Proyectos Eólicos en Colombia</p>
+        <p style='font-size: 16px; margin-bottom: 5px;'>
+            <strong>Desarrollado por:</strong> Oscar Ivan Vargas Pineda
+        </p>
+        <p style='font-size: 14px; color: #666; margin-top: 0;'>
+            Con ayuda de la IA Claude | Streamlit 🎈
+        </p>
+        <p style='font-size: 12px; color: #888; margin-top: 10px;'>
+            Análisis de Proyectos de Energía Renovable en Colombia
+        </p>
     </div>
     """,
     unsafe_allow_html=True

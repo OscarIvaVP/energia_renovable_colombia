@@ -60,7 +60,32 @@ if gdf is not None and df_excel is not None:
     # Convertir a GeoJSON para Plotly
     gdf_merged = gdf_merged.to_crs(epsg=4326)
     
-    # Crear dos columnas para el layout
+    # Sección de estadísticas (PRIMERO)
+    st.subheader("📈 Estadísticas Generales")
+    
+    col_stat1, col_stat2, col_stat3, col_stat4 = st.columns(4)
+    
+    with col_stat1:
+        st.metric("Total de Proyectos", len(df_excel))
+    
+    with col_stat2:
+        st.metric("Departamentos con Proyectos", int(gdf_merged[gdf_merged['Cantidad_Proyectos'] > 0].shape[0]))
+    
+    with col_stat3:
+        años_disponibles = df_excel['Año de publicación'].dropna()
+        if len(años_disponibles) > 0:
+            st.metric("Rango de Años", f"{int(años_disponibles.min())} - {int(años_disponibles.max())}")
+        else:
+            st.metric("Rango de Años", "N/A")
+    
+    with col_stat4:
+        dept_max = proyectos_por_depto.iloc[0] if len(proyectos_por_depto) > 0 else None
+        if dept_max is not None:
+            st.metric("Departamento con Más Proyectos", dept_max['Departamento'].title())
+    
+    st.markdown("---")
+    
+    # Crear dos columnas para los gráficos (SEGUNDO)
     col1, col2 = st.columns([1, 1])
     
     with col1:
@@ -122,31 +147,7 @@ if gdf is not None and df_excel is not None:
         
         st.plotly_chart(fig_linea, key="linea", config={'displayModeBar': False})
     
-    # Sección de estadísticas
-    st.markdown("---")
-    st.subheader("📈 Estadísticas Generales")
-    
-    col_stat1, col_stat2, col_stat3, col_stat4 = st.columns(4)
-    
-    with col_stat1:
-        st.metric("Total de Proyectos", len(df_excel))
-    
-    with col_stat2:
-        st.metric("Departamentos con Proyectos", int(gdf_merged[gdf_merged['Cantidad_Proyectos'] > 0].shape[0]))
-    
-    with col_stat3:
-        años_disponibles = df_excel['Año de publicación'].dropna()
-        if len(años_disponibles) > 0:
-            st.metric("Rango de Años", f"{int(años_disponibles.min())} - {int(años_disponibles.max())}")
-        else:
-            st.metric("Rango de Años", "N/A")
-    
-    with col_stat4:
-        dept_max = proyectos_por_depto.iloc[0] if len(proyectos_por_depto) > 0 else None
-        if dept_max is not None:
-            st.metric("Departamento con Más Proyectos", dept_max['Departamento'].title())
-    
-    # Tabla detallada
+    # Tabla detallada (TERCERO - AL FINAL)
     st.markdown("---")
     st.subheader("📋 Detalle de Proyectos por Departamento")
     
