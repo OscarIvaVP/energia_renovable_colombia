@@ -18,6 +18,26 @@ st.markdown("---")
 # Función para cargar datos
 @st.cache_data
 def cargar_datos():
+    import os
+    
+    # Mostrar estructura de archivos disponibles
+    st.subheader("🔍 Verificando archivos disponibles...")
+    
+    if os.path.exists("datos"):
+        st.info("📁 Carpeta 'datos' encontrada")
+        for root, dirs, files in os.walk("datos"):
+            level = root.replace("datos", "").count(os.sep)
+            indent = " " * 2 * level
+            st.text(f"{indent}📂 {os.path.basename(root)}/")
+            subindent = " " * 2 * (level + 1)
+            for file in files:
+                st.text(f"{subindent}📄 {file}")
+    else:
+        st.error("❌ Carpeta 'datos' NO encontrada")
+        st.text("Archivos en directorio raíz:")
+        for item in os.listdir("."):
+            st.text(f"  - {item}")
+    
     try:
         # Cargar el archivo GeoJSON
         geojson_path = "datos/departamentos/Colombia.geo.json"
