@@ -20,13 +20,13 @@ st.markdown("---")
 def cargar_datos():
     try:
         # Cargar el shapefile
-        shp_path = "datos/SHP_MGN2018_INTGRD_DEPTO/MGN_ANM_DPTOS.shp"
+        shp_path = "datos\SHP_MGN2018_INTGRD_DEPTO\MGN_ANM_DPTOS.shp"
         st.info(f"Intentando cargar shapefile desde: {shp_path}")
         gdf = gpd.read_file(shp_path)
         st.success(f"✅ Shapefile cargado correctamente. Registros: {len(gdf)}")
         
         # Cargar el archivo Excel
-        excel_path = "datos/proyectos/proyecto_colombia.xlsx"
+        excel_path = "datos\proyectos\proyecto_colombia.xlsx"
         st.info(f"Intentando cargar Excel desde: {excel_path}")
         df_excel = pd.read_excel(excel_path)
         st.success(f"✅ Excel cargado correctamente. Registros: {len(df_excel)}")
@@ -169,8 +169,8 @@ if gdf is not None and df_excel is not None:
     
 else:
     st.error("⚠️ No se pudieron cargar los datos. Verifica que los archivos existan en las rutas especificadas:")
-    st.code("datos/SHP_MGN2018_INTGRD_DEPTO/MGN_ANM_DPTOS.shp")
-    st.code("datos/proyectos/proyecto_colombia.xlsx")
+    st.code("datos\SHP_MGN2018_INTGRD_DEPTO\MGN_ANM_DPTOS.shp")
+    st.code("datos\proyectos\proyecto_colombia.xlsx")
     
     st.info("📝 Asegúrate de que:")
     st.markdown("""
