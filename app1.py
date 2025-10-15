@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 # Configuración de la página
 st.set_page_config(
-    page_title="Análisis de Proyectos Eólicos en Colombia",
+    page_title="Proyectos Energia Renovables en Colombia",
     page_icon="🌬️",
     layout="wide"
 )
@@ -18,45 +18,18 @@ st.markdown("---")
 # Función para cargar datos
 @st.cache_data
 def cargar_datos():
-    import os
-    
-    # Mostrar estructura de archivos disponibles
-    st.subheader("🔍 Verificando archivos disponibles...")
-    
-    if os.path.exists("datos"):
-        st.info("📁 Carpeta 'datos' encontrada")
-        for root, dirs, files in os.walk("datos"):
-            level = root.replace("datos", "").count(os.sep)
-            indent = " " * 2 * level
-            st.text(f"{indent}📂 {os.path.basename(root)}/")
-            subindent = " " * 2 * (level + 1)
-            for file in files:
-                st.text(f"{subindent}📄 {file}")
-    else:
-        st.error("❌ Carpeta 'datos' NO encontrada")
-        st.text("Archivos en directorio raíz:")
-        for item in os.listdir("."):
-            st.text(f"  - {item}")
-    
     try:
         # Cargar el archivo GeoJSON
         geojson_path = "datos/departamentos/Colombia.geo.json"
-        st.info(f"Intentando cargar GeoJSON desde: {geojson_path}")
         gdf = gpd.read_file(geojson_path)
-        st.success(f"✅ GeoJSON cargado correctamente. Registros: {len(gdf)}")
         
         # Cargar el archivo Excel
         excel_path = "datos/proyectos/proyecto_colombia.xlsx"
-        st.info(f"Intentando cargar Excel desde: {excel_path}")
         df_excel = pd.read_excel(excel_path)
-        st.success(f"✅ Excel cargado correctamente. Registros: {len(df_excel)}")
         
         return gdf, df_excel
     except Exception as e:
         st.error(f"❌ Error al cargar los datos: {str(e)}")
-        st.error(f"Tipo de error: {type(e).__name__}")
-        import traceback
-        st.code(traceback.format_exc())
         return None, None
 
 # Cargar los datos
@@ -116,7 +89,7 @@ if gdf is not None and df_excel is not None:
             margin={"r":0,"t":40,"l":0,"b":0}
         )
         
-        st.plotly_chart(fig_mapa, width='stretch')
+        st.plotly_chart(fig_mapa, key="mapa", config={'displayModeBar': False})
     
     with col2:
         st.subheader("📊 Proyectos por Año de Publicación")
@@ -147,7 +120,7 @@ if gdf is not None and df_excel is not None:
             showlegend=False
         )
         
-        st.plotly_chart(fig_linea, width='stretch')
+        st.plotly_chart(fig_linea, key="linea", config={'displayModeBar': False})
     
     # Sección de estadísticas
     st.markdown("---")
@@ -183,8 +156,8 @@ if gdf is not None and df_excel is not None:
     
     st.dataframe(
         tabla_resumen,
-        width='stretch',
-        hide_index=True
+        hide_index=True,
+        use_container_width=True
     )
     
 else:
